@@ -1,0 +1,55 @@
+version: "3"
+
+services:
+  warehouse:
+    image: postgres:15
+    container_name: warehouse
+    environment:
+      POSTGRES_USER: ${DWH_USER}
+      POSTGRES_PASSWORD: ${DWH_PASSWORD}
+      POSTGRES_DB: ${DWH_DB}
+    ports:
+      - "5433:5432"
+    networks:
+      - warehouse_network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "${DWH_USER}" ]
+      interval: 5s
+      retries: 5
+    restart: always
+
+  loader:
+    image: 
+    build:
+      context: ./containers/loader
+    volumes:
+      - ./:/opt/warehousing
+    environment:
+      DWH_USER: ${DWH_USER}
+      DWH_PASSWORD: ${DWH_PASSWORD}
+      DWH_DB: ${DWH_DB}
+      DWH_PORT: ${DWH_PORT}
+      DWH_HOST:  ${DWH_HOST}
+    networks:
+      - warehouse_network
+    depends_on:
+      - warehouse
+    
+  dashboard:
+    image: metabase/metabase
+    container_name: dashboard
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./metabase-data:/metabase-data
+    environment:
+      MB_DB_FILE: /metabase-data/metabase.db
+    networks:
+      - warehouse_network
+    depends_on:
+      - warehouse
+
+networks:
+  warehouse_network:
+    name: warehouse_network
+    
