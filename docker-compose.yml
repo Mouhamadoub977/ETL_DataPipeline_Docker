@@ -7,23 +7,27 @@ services:
     environment:
       POSTGRES_USER: ${DWH_USER}
       POSTGRES_PASSWORD: ${DWH_PASSWORD}
-      POSTGRES_DB: ${DWH_DB}
+      POSTGRES_DB: ${DWH_DB}  # Cela utilise la valeur de DWH_DB dans le fichier .env
     ports:
       - "5433:5432"
     networks:
       - warehouse_network
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "${DWH_USER}" ]
+      test: ["CMD", "pg_isready", "-U", "${DWH_USER}"]
       interval: 5s
       retries: 5
     restart: always
 
+
   loader:
-    image: 
+   # image: 
     build:
-      context: ./containers/loader
+     # context: ./containers
+      context: .
+      dockerfile: containers/Dockerfile
     volumes:
-      - ./:/opt/warehousing
+     # - ./:/opt/warehousing
+      - ./data:/opt/Projet_Mouha/data 
     environment:
       DWH_USER: ${DWH_USER}
       DWH_PASSWORD: ${DWH_PASSWORD}
