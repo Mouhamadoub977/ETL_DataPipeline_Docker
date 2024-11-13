@@ -30,25 +30,32 @@ Les composants sont configurés pour fonctionner ensemble dans un environnement 
 ## Installation
 1. **Cloner le dépôt**
 
-`git clone https://github.com/Mouhamadoub977/ETL_DataPipeline_Docker.git
-cd ETL_DataPipeline_Docker`
+`git clone https://github.com/Mouhamadoub977/ETL_DataPipeline_Docker.git`
+
+`cd ETL_DataPipeline_Docker`
 
 2. **Configurer les Variables d’Environnement**
+   
 Créez un fichier .env à la racine du projet avec les informations suivantes :
 
 
-`DWH_USER=your_username
-DWH_PASSWORD=your_password
-DWH_DB=your_database_name
-DWH_HOST=warehouse
-DWH_PORT=5432`
+  `DWH_USER=your_username
+  DWH_PASSWORD=your_password
+  DWH_DB=your_database_name
+  DWH_HOST=warehouse
+  DWH_PORT=5432`
+
+  
 Ces variables seront utilisées par le conteneur PostgreSQL et le script ETL pour se connecter à la base de données.
 
 3. **Exécuter le Projet avec Docker Compose**
+4. 
 Pour lancer tous les services, exécutez la commande suivante :
 
 
 `docker-compose up --build`
+
+
 Cette commande va construire les images Docker pour le script ETL et PostgreSQL.
 
 
